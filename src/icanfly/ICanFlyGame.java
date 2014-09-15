@@ -2,9 +2,9 @@ package icanfly;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 
@@ -19,19 +19,25 @@ public class ICanFlyGame extends BasicGame {
 	}
 
 	@Override
-	public void render(GameContainer arg0, Graphics arg1) throws SlickException {
+	public void render(GameContainer container, Graphics g) throws SlickException {
 		player.render();
 		
 	}
 
 	@Override
-	public void init(GameContainer arg0) throws SlickException {
+	public void init(GameContainer container) throws SlickException {
 		player = new Player(GAME_WIDTH/2, GAME_HEIGHT/2);
 	}
 
 	@Override
-	public void update(GameContainer arg0, int arg1) throws SlickException {
-		// TODO Auto-generated method stub
+	public void update(GameContainer container, int delta) throws SlickException {
+		Input input = container.getInput();
+		if (input.isKeyDown(Input.KEY_LEFT)) {
+			player.moveLeft();
+		}
+		if (input.isKeyDown(Input.KEY_RIGHT)) {
+			player.moveRight();
+		}
 		
 	}
 	

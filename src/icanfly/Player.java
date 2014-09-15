@@ -13,6 +13,12 @@ public class Player {
 	    image = new Image("res/player.png");
 	}
 	public void render() {
-	    image.draw(x - 20, 480 - (y + 20));
+	    image.draw(x,y);
+	}
+	public void moveLeft() {
+		x -= 10;
+	}
+	public void moveRight() {
+		x += 10;
 	}
 }
