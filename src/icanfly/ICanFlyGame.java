@@ -12,6 +12,8 @@ public class ICanFlyGame extends BasicGame {
 	private Player player;
 	public static final int GAME_WIDTH = 640;
 	public static final int GAME_HEIGHT = 480;
+	public static final float PLAYER_JUMP_VY = -4;
+	public static final float G = (float) 0.7;
 	
 	public ICanFlyGame(String title) {
 		super(title);
@@ -26,7 +28,7 @@ public class ICanFlyGame extends BasicGame {
 
 	@Override
 	public void init(GameContainer container) throws SlickException {
-		player = new Player(GAME_WIDTH/2, GAME_HEIGHT/2);
+		player = new Player(GAME_WIDTH/2, GAME_HEIGHT/2, PLAYER_JUMP_VY);
 	}
 
 	@Override
@@ -38,8 +40,19 @@ public class ICanFlyGame extends BasicGame {
 		if (input.isKeyDown(Input.KEY_RIGHT)) {
 			player.moveRight();
 		}
+		if (input.isKeyDown(Input.KEY_SPACE)) {
+	    	player.jump();
+	    }
+		player.update();
 		
 	}
+	
+	/*@Override
+	  public void keyPressed(int key, char c) {
+	    if (key == Input.KEY_SPACE) {
+	    	player.jump();
+	    }
+	 }*/
 	
 	public static void main(String[] args) {
 	    try {
