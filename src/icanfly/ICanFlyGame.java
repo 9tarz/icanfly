@@ -12,7 +12,8 @@ public class ICanFlyGame extends BasicGame {
 	private Obstacle obstacle;
 	public static final int GAME_WIDTH = 640;
 	public static final int GAME_HEIGHT = 480;
-	public static final float PLAYER_JUMP_VY = -7;
+	public static final float PLAYER_JUMP_VY = -5;
+	public static final float OBSTACLE_VY = 4;
 	public static final float G = (float) 0.7;
 	
 	public ICanFlyGame(String title) {
@@ -30,7 +31,7 @@ public class ICanFlyGame extends BasicGame {
 	@Override
 	public void init(GameContainer container) throws SlickException {
 		player = new Player(GAME_WIDTH/2, GAME_HEIGHT/2, PLAYER_JUMP_VY);
-		obstacle = new Obstacle(GAME_WIDTH/2  , GAME_HEIGHT/2);
+		obstacle = new Obstacle(GAME_WIDTH/2  , 0,OBSTACLE_VY);
 	}
 
 	@Override
@@ -43,8 +44,7 @@ public class ICanFlyGame extends BasicGame {
 			player.moveRight();
 		}
 		player.update();
-		System.out.println(player.getX());
-		
+		obstacle.update();
 	}
 	
 	@Override
