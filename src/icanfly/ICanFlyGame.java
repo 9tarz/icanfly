@@ -43,6 +43,7 @@ public class ICanFlyGame extends BasicGame {
 			player.moveRight();
 		}
 		player.update();
+		System.out.println(player.getX());
 		
 	}
 	

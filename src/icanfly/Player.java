@@ -11,6 +11,9 @@ public class Player {
 	private float vy;
 	private float vjump;
 	  
+	public float getX() { return x; }
+	public float getY() { return y; }
+	  
 	public Player(float x, float y,float vjump) throws SlickException {
 	    this.x = x;
 	    this.y = y;
@@ -24,6 +27,12 @@ public class Player {
 	}
 	
 	public void update() {
+		if(this.x > ICanFlyGame.GAME_WIDTH){
+			this.x = 0;
+		}
+		else if(this.x < 0) {
+			this.x = ICanFlyGame.GAME_WIDTH;
+		}
 	    y += vy;
 	    vy += ICanFlyGame.G;
 	}
