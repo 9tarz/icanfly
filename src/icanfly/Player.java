@@ -4,6 +4,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 public class Player {
+	public static final int X_MOVE_RANGE = 10;
 	private float x;
 	private float y;
 	private Image image;
@@ -32,11 +33,11 @@ public class Player {
 	}
 	
 	public void moveLeft() {
-		x -= 10;
+		x -= X_MOVE_RANGE;
 	}
 	
 	public void moveRight() {
-		x += 10;
+		x += X_MOVE_RANGE;
 	}
 	
 	public void jump(){
