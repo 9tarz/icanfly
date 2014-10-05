@@ -11,18 +11,30 @@ public class Obstacle {
 	private float y;
 	private float vy;
 	
-	public Obstacle (float x, float y, float vy) throws SlickException {
+	public Obstacle (float vy) throws SlickException {
 		this.x = randomX();
-		this.y = y;
+		this.y = 0;
 		this.vy = vy;
 		obstacle = new Image("res/obstacle.png");
+	}
+	
+	public float getX(){
+		return x;
 	}
 	
 	public void render() {
 		 obstacle.draw(x,y);
 	}
 	
-	public void update() {
+	public void update() throws SlickException {
+		if ( y > 480){
+			y = -30;
+			for(int i=0;i<=ICanFlyGame.OBSTACLE_COUNT;i++){
+				x = randomX();
+			}
+			//ICanFlyGame.initObstacles();
+			
+		}
 		 y += vy;
 	}
 	

@@ -9,12 +9,13 @@ import org.newdawn.slick.SlickException;
 
 public class ICanFlyGame extends BasicGame {
 	private Player player;
-	private Obstacle obstacle;
 	public static final int GAME_WIDTH = 640;
 	public static final int GAME_HEIGHT = 480;
 	public static final float PLAYER_JUMP_VY = -5;
 	public static final float OBSTACLE_VY = 4;
 	public static final float G = (float) 0.7;
+	private static Obstacle[] obstacles;
+	public static final int OBSTACLE_COUNT = 5;
 	
 	public ICanFlyGame(String title) {
 		super(title);
@@ -23,28 +24,39 @@ public class ICanFlyGame extends BasicGame {
 
 	@Override
 	public void render(GameContainer container, Graphics g) throws SlickException {
-		player.render();
-		obstacle.render();
+		for (Obstacle obstacle : obstacles) {
+		      obstacle.render();
+		    }
+			player.render();
 		
 	}
 
 	@Override
 	public void init(GameContainer container) throws SlickException {
 		player = new Player(GAME_WIDTH/2, GAME_HEIGHT/2, PLAYER_JUMP_VY);
-		obstacle = new Obstacle(GAME_WIDTH/2  , 0,OBSTACLE_VY);
+		initObstacles();
+	}
+
+	public static void initObstacles() throws SlickException {
+		 obstacles = new Obstacle[OBSTACLE_COUNT];
+	    for (int i = 0; i < OBSTACLE_COUNT ; i++) {
+	     obstacles[i] = new Obstacle(OBSTACLE_VY);
+	    }
 	}
 
 	@Override
 	public void update(GameContainer container, int delta) throws SlickException {
 		Input input = container.getInput();
-		if (input.isKeyDown(Input.KEY_LEFT)) {
+		if (input.isKeyDown(Input.KEY_A )) {
 			player.moveLeft();
 		}
-		if (input.isKeyDown(Input.KEY_RIGHT)) {
+		if (input.isKeyDown(Input.KEY_D)) {
 			player.moveRight();
 		}
 		player.update();
-		obstacle.update();
+		for (Obstacle obstacle : obstacles) {
+			obstacle.update();
+		}
 	}
 	
 	@Override
