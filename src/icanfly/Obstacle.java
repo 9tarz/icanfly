@@ -40,7 +40,9 @@ public class Obstacle {
 		  return n;
 	  }
 	public boolean isCollide(float pX,float pY){
-		if(Math.abs(pX - x) <= 40  && Math.abs(pY - y) <= 40){
+		if(Math.abs(pX - x) <= 50  && Math.abs(pY - y) <= 50){
+			System.out.println(Math.abs(pX - x));
+			System.out.println(Math.abs(pY - y));
 			return true;
 		}
 		return false;

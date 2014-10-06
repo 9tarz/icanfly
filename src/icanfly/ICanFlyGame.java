@@ -8,6 +8,7 @@ import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
@@ -23,6 +24,7 @@ public class ICanFlyGame extends BasicGame {
 	private boolean isGameOver;
 	private int score;
 	private int timer;
+	private Image gameoverBG;
 	
 	public ICanFlyGame(String title) {
 		super(title);
@@ -30,13 +32,25 @@ public class ICanFlyGame extends BasicGame {
 
 	@Override
 	public void render(GameContainer container, Graphics g) throws SlickException {
-		for (Obstacle obstacle : obstacles) {
-		      obstacle.render();
-		    }
+		if (!isGameOver) {
+			//this.init(container);
+			for (Obstacle obstacle : obstacles) {
+			      obstacle.render();
+			}
 			player.render();
 			g.setColor(new Color(255,255,255));
 			g.drawString("Score:" + score, 100, 100);
 			g.drawString("HP:" + player.getHP(), 100, 150);
+		} else {
+			gameoverBG = new Image("res/gameoverBG.jpg");
+			gameoverBG.draw(0, 0);
+			isGameOver = false;
+			for(int i=0;i<obstacles.size();i++){
+				obstacles.remove(i);
+			}
+			
+		}
+		
 	}
 
 	@Override
@@ -67,14 +81,15 @@ public class ICanFlyGame extends BasicGame {
 
 	@Override
 	public void update(GameContainer container, int delta) throws SlickException {
-		if (isGameOver) {
+		/*if (isGameOver) {
 			isGameOver = false;
 			for(int i=0;i<obstacles.size();i++){
 				obstacles.remove(i);
 			}
-			this.init(container);
+			 //this.init(container);
+			 //gameoverBG = new Image("res/player.png");
 			
-		}
+		}*/
 		Input input = container.getInput();
 		if (input.isKeyDown(Input.KEY_A )) {
 			player.moveLeft();
