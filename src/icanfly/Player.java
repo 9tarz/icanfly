@@ -22,6 +22,10 @@ public class Player {
 	public void getHit() {
 		this.hp -= 10;
 	}
+	
+	public void getHeal() {
+		this.hp = 100;
+	}
 	  
 	public Player(float x, float y,float vjump) throws SlickException {
 	    this.x = x;
@@ -41,6 +45,9 @@ public class Player {
 		}
 		else if(this.x < 0) {
 			this.x = ICanFlyGame.GAME_WIDTH;
+		}
+		if(this.y <= 0){
+			getHeal();
 		}
 	    y += vy;
 	    vy += ICanFlyGame.G;
