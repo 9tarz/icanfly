@@ -131,7 +131,7 @@ public class ICanFlyGame extends BasicGame {
 	    if (key == Input.KEY_SPACE) {
 	    	player.jump();
 	    }
-	    if (key == Input.KEY_ENTER) {
+	    if (key == Input.KEY_ENTER && isGameOver) {
 	    	try {
 				init(null);
 			} catch (SlickException e) {
