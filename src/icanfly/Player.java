@@ -10,9 +10,18 @@ public class Player {
 	private Image image;
 	private float vy;
 	private float vjump;
+	private int hp;
 	  
 	public float getX() { return x; }
 	public float getY() { return y; }
+	public int getHP() { return hp; }
+	public void setHP(int hp) {
+		this.hp = hp;
+	 }
+	
+	public void getHit() {
+		this.hp -= 10;
+	}
 	  
 	public Player(float x, float y,float vjump) throws SlickException {
 	    this.x = x;
