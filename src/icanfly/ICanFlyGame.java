@@ -44,11 +44,11 @@ public class ICanFlyGame extends BasicGame {
 		} else {
 			gameoverBG = new Image("res/gameoverBG.jpg");
 			gameoverBG.draw(0, 0);
-			isGameOver = false;
+			g.drawString("Score:" + score, 250, 100);
+			g.drawString("ENTER TO START!", 250, 150);
 			for(int i=0;i<obstacles.size();i++){
 				obstacles.remove(i);
-			}
-			
+			}		
 		}
 		
 	}
@@ -105,7 +105,7 @@ public class ICanFlyGame extends BasicGame {
 			isGameOver = true;
 		}
 		timer += delta;
-		if(timer >= 50){
+		if(timer >= 50 &&!isGameOver ){
 			score++;
 			timer=0;
 		}
@@ -130,6 +130,14 @@ public class ICanFlyGame extends BasicGame {
 	  public void keyPressed(int key, char c) {
 	    if (key == Input.KEY_SPACE) {
 	    	player.jump();
+	    }
+	    if (key == Input.KEY_ENTER) {
+	    	try {
+				init(null);
+			} catch (SlickException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	    }
 	 }
 	
