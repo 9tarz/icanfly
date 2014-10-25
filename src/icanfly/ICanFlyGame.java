@@ -59,7 +59,7 @@ public class ICanFlyGame extends BasicGame {
   private void renderGameOver(Graphics g) throws SlickException {
     gameoverBG = new Image("res/gameoverBG.jpg");
     g.drawImage(gameoverBG,0,0,null);
-    g.drawString("Score:" + score, 250, 100);
+    g.drawString("Score:" + score, 280, 100);
     g.drawString("ENTER TO START!", 250, 150);
   }
 
@@ -137,6 +137,9 @@ public class ICanFlyGame extends BasicGame {
         delay_timer = OBSTACLE_DELAY_GODLIKE;
       } else {
         delay_timer = OBSTACLE_DELAY_EASY;
+      }
+      if (player.isDeathZone()) {
+        delay_timer = OBSTACLE_DELAY_GODLIKE;
       }
     }
   }

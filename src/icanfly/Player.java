@@ -94,7 +94,11 @@ public class Player {
     x += X_MOVE_RANGE *delta;
   }
 
-  public void jump(){
+  public void jump() {
     this.vy = vjump;
+  }
+  
+  public boolean isDeathZone() {
+    return (this.y <= 150);
   }
 }
