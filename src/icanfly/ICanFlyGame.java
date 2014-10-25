@@ -22,11 +22,10 @@ public class ICanFlyGame extends BasicGame {
   private static final int OBSTACLE_DELAY_MEDIUM = 300;
   private static final int OBSTACLE_DELAY_HARD = 100;
   private static final int OBSTACLE_DELAY_GODLIKE = 50;
-  public static final int OBSTACLE_COUNT = 5;
-  public static final int INITIAL_HP = 100;
-  public static final int INITIAL_SCORE = 0;
-  public static final int INITIAL_SCORE_TIMER = 0;
-  public static final int INITIAL_DELAY_TIMER = 0;
+  private static final int INITIAL_HP = 100;
+  private static final int INITIAL_SCORE = 0;
+  private static final int INITIAL_SCORE_TIMER = 0;
+  private static final int INITIAL_DELAY_TIMER = 0;
 
   public static boolean isGameOver;
   private Player player;
@@ -92,7 +91,7 @@ public class ICanFlyGame extends BasicGame {
 
   public void createObstacles() throws SlickException {
     for (int i = 0; i < 1 ; i++) {
-      entities.add(new Obstacle( OBSTACLE_VY, randomTypeofObstacle()));
+      entities.add(new Obstacle(OBSTACLE_VY, randomTypeofObstacle()));
     }
   }
 
@@ -103,7 +102,7 @@ public class ICanFlyGame extends BasicGame {
     increaseScore(delta);
     handleGameMode(delta);
     handleEntity(delta);
-    if (player.getY() > GAME_HEIGHT || player.getHP() <= 0 ) {
+    if (player.isDie()) {
       isGameOver = true;
     }
   }
@@ -147,8 +146,8 @@ public class ICanFlyGame extends BasicGame {
   public void increaseScore(int delta) {
     score_timer += delta;
     if(score_timer >= 50 && !isGameOver){
-      score++;
-      score_timer = 0;
+      score += 1;
+      score_timer = INITIAL_SCORE_TIMER;
     }
   }
 

@@ -107,4 +107,12 @@ public class Player {
   public boolean isDeathZone() {
     return (this.y <= 150);
   }
+  
+  public boolean isDie() {
+    if (this.getY() > ICanFlyGame.GAME_HEIGHT || this.getHP() <= 0 ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

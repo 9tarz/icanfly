@@ -8,6 +8,15 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
 public class Obstacle implements Entity {
+  private static final float KRYPTONITE_S_IMAGE_WIDTH = 21f;
+  private static final float KRYPTONITE_S_IMAGE_HEIGHT = 45f;
+  private static final float KRYPTONITE_M_IMAGE_WIDTH = 29f;
+  private static final float KRYPTONITE_M_IMAGE_HEIGHT = 67f;
+  private static final float KRYPTONITE_L_IMAGE_WIDTH = 40f;
+  private static final float KRYPTONITE_L_IMAGE_HEIGHT = 91f;
+  private static final float HEALSTONE_IMAGE_WIDTH = 45f;
+  private static final float HEALSTONE_IMAGE_HEIGHT = 45f;
+  
   private Image obstacle;
   private float x;
   private float y;
@@ -26,27 +35,27 @@ public class Obstacle implements Entity {
     switch(type) {
       case 9:
         obstacle = new Image("res/kryptonite_s.png");
-        this.hitbox = new Rectangle(x, y, 21f, 45f);
+        this.hitbox = new Rectangle(this.x, this.y, KRYPTONITE_S_IMAGE_WIDTH, KRYPTONITE_S_IMAGE_HEIGHT);
         this.type = type;
         break;
       case 10:
         obstacle = new Image("res/kryptonite_m.png");
-        this.hitbox = new Rectangle(x, y, 29f, 67f);
+        this.hitbox = new Rectangle(this.x, this.y, KRYPTONITE_M_IMAGE_WIDTH, KRYPTONITE_M_IMAGE_HEIGHT);
         this.type = type;
         break;
       case 11:
         obstacle = new Image("res/kryptonite_l.png");
-        this.hitbox = new Rectangle(x, y, 40f, 91f);
+        this.hitbox = new Rectangle(this.x, this.y, KRYPTONITE_L_IMAGE_WIDTH, KRYPTONITE_L_IMAGE_HEIGHT);
         this.type = type;
         break;
       case 7:
         obstacle = new Image("res/heal_stone.png");
-        this.hitbox = new Rectangle(x, y, 90f, 90f);
+        this.hitbox = new Rectangle(this.x, this.y, HEALSTONE_IMAGE_WIDTH, HEALSTONE_IMAGE_HEIGHT);
         this.type = 99;
         break;
       default :
         obstacle = new Image("res/kryptonite_m.png");
-        this.hitbox = new Rectangle(x, y, 29f, 67f);
+        this.hitbox = new Rectangle(this.x, this.y, KRYPTONITE_M_IMAGE_WIDTH, KRYPTONITE_M_IMAGE_HEIGHT);
         this.type = 1;
         break;
         }
