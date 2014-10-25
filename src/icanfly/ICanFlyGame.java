@@ -1,11 +1,11 @@
 package icanfly;
 
-import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Random;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -19,12 +19,18 @@ public class ICanFlyGame extends BasicGame {
 	public static final float PLAYER_JUMP_VY = -5;
 	public static final float OBSTACLE_VY = 4;
 	public static final float G = (float) 0.7;
-	private static ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
+	private LinkedList<Entity> entities = new  LinkedList<Entity>();
 	public static final int OBSTACLE_COUNT = 5;
-	private boolean isGameOver;
+	public static boolean isGameOver;
+	private static int OBSTACLE_DELAY_EASY = 500;
+	private static int OBSTACLE_DELAY_MEDIUM = 300;
+	private static int OBSTACLE_DELAY_HARD = 100;
+	private static int OBSTACLE_DELAY_GODLIKE = 50;
 	private int score;
-	private int timer;
+	private int score_timer;
+	private int delay_timer;
 	private Image gameoverBG;
+	private Image gameBG;
 	
 	public ICanFlyGame(String title) {
 		super(title);
@@ -33,96 +39,110 @@ public class ICanFlyGame extends BasicGame {
 	@Override
 	public void render(GameContainer container, Graphics g) throws SlickException {
 		if (!isGameOver) {
-			//this.init(container);
-			for (Obstacle obstacle : obstacles) {
-			      obstacle.render();
+			renderGameBG(g);
+			renderScoreAndHP(g);
+			player.render(g);
+			for (Entity entity : entities) {
+				entity.render(g);
 			}
-			player.render();
-			g.setColor(new Color(255,255,255));
-			g.drawString("Score:" + score, 100, 100);
-			g.drawString("HP:" + player.getHP(), 100, 150);
 		} else {
-			gameoverBG = new Image("res/gameoverBG.jpg");
-			gameoverBG.draw(0, 0);
-			g.drawString("Score:" + score, 250, 100);
-			g.drawString("ENTER TO START!", 250, 150);
-			for(int i=0;i<obstacles.size();i++){
-				obstacles.remove(i);
-			}		
+			renderGameOver(g);
 		}
 		
+	}
+
+	private void renderGameOver(Graphics g) throws SlickException {
+		gameoverBG = new Image("res/gameoverBG.jpg");
+		g.drawImage(gameoverBG,0,0,null);
+		g.drawString("Score:" + score, 250, 100);
+		g.drawString("ENTER TO START!", 250, 150);
+	}
+
+	private void renderGameBG(Graphics g) throws SlickException {
+		gameBG = new Image("res/BG.png"); 
+		g.drawImage(gameBG,0,0,null);
+	}
+
+	private void renderScoreAndHP(Graphics g) {
+		g.drawString("Score:" + score, 100, 100);
+		g.drawString("HP:" + player.getHP(), 100, 150);
 	}
 
 	@Override
 	public void init(GameContainer container) throws SlickException {
 		isGameOver = false;
 		score = 0;
-		timer = 0;
+		score_timer = 0;
+		delay_timer = 0;
 		player = new Player(GAME_WIDTH/2, GAME_HEIGHT/2, PLAYER_JUMP_VY);
 		player.setHP(100);
 		createObstacles();
 	}
 	
-	private static int randomNumberofObstacles(){
-		int obstacleCount = 0;
-		while(obstacleCount == 0){
-			Random rand = new Random();
-			obstacleCount = 5+rand.nextInt(OBSTACLE_COUNT) ;
-		}
-		return obstacleCount;
+	public int randomTypeofObstacle() {
+		  Random rand = new Random();
+		  int n = rand.nextInt(5);
+		  return n;
 	}
 	
-	public static void createObstacles() throws SlickException {
-		int obstacleCount = randomNumberofObstacles();
-	    for (int i = 0; i < obstacleCount ; i++) {
-	     obstacles.add(new Obstacle(OBSTACLE_VY));
+	public void createObstacles() throws SlickException {
+	    for (int i = 0; i < 1 ; i++) {
+	    	entities.add(new Obstacle(OBSTACLE_VY,randomTypeofObstacle()));
 	    }
 	}
-
+	
 	@Override
 	public void update(GameContainer container, int delta) throws SlickException {
-		/*if (isGameOver) {
-			isGameOver = false;
-			for(int i=0;i<obstacles.size();i++){
-				obstacles.remove(i);
+		player.update(delta);
+		playerControl(container,delta);
+		increaseScore(delta);
+		delay_timer -= delta;
+		if(delay_timer <= 0){
+			createObstacles();
+			if (this.score < 500)
+				delay_timer = OBSTACLE_DELAY_EASY;
+			else if (this.score >= 500 && this.score < 1500)
+				delay_timer = OBSTACLE_DELAY_MEDIUM;
+			else if (this.score >= 1500 && this.score < 3000)
+				delay_timer = OBSTACLE_DELAY_HARD;
+			else if (this.score >= 3000)
+				delay_timer = OBSTACLE_DELAY_GODLIKE;
+			else {
+				delay_timer = OBSTACLE_DELAY_EASY;
 			}
-			 //this.init(container);
-			 //gameoverBG = new Image("res/player.png");
-			
-		}*/
-		Input input = container.getInput();
-		if (input.isKeyDown(Input.KEY_A )) {
-			player.moveLeft();
 		}
-		if (input.isKeyDown(Input.KEY_D)) {
-			player.moveRight();
-		}
-		player.update();
-		for (Obstacle obstacle : obstacles) {
-			obstacle.update();
+		Iterator<Entity> iterator = entities.iterator();
+		while (iterator.hasNext()) {
+			Entity entity = iterator.next();
+			entity.update(delta);
+			if(entity.isCollide(player)){
+				player.getHit(entity.getType());
+				iterator.remove();
+			}
+			if (entity.isDeletable()) {
+				iterator.remove();
+			}
 		}
 		if (player.getY() > 480 || player.getHP() <= 0 ) {
 			isGameOver = true;
 		}
-		timer += delta;
-		if(timer >= 50 &&!isGameOver ){
+	}
+
+	public void increaseScore(int delta) {
+		score_timer += delta;
+		if(score_timer >= 50 && !isGameOver ){
 			score++;
-			timer=0;
+			score_timer=0;
 		}
-		for(int i=0;i<obstacles.size();i++){
-			if(obstacles.get(i).checkDelete){
-				obstacles.remove(i);
-			}
+	}
+
+	public void playerControl(GameContainer container,int delta) {
+		Input input = container.getInput();
+		if (input.isKeyDown(Input.KEY_A )) {
+			player.moveLeft(delta);
 		}
-		if(obstacles.size() == 0){
-			createObstacles();
-		}
-		
-		for(int i=0;i<obstacles.size();i++){
-			if(obstacles.get(i).isCollide(player.getX(), player.getY())){
-				player.getHit();
-				obstacles.remove(i);
-			}
+		if (input.isKeyDown(Input.KEY_D)) {
+			player.moveRight(delta);
 		}
 	}
 	
@@ -150,6 +170,4 @@ public class ICanFlyGame extends BasicGame {
 	    } catch (SlickException e) {
 	      e.printStackTrace();
 	   }
-}
-	
-}
+}}

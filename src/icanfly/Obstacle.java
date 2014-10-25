@@ -2,47 +2,83 @@ package icanfly;
 
 import java.util.Random;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 
-public class Obstacle {
+public class Obstacle implements Entity {
 	private Image obstacle;
 	private float x;
 	private float y;
 	private float vy;
+	public Rectangle hitbox;
+	private int type;
 	
-	public boolean checkDelete = false;
-	
-	public Obstacle (float vy) throws SlickException {
+	public Obstacle (float vy, int type) throws SlickException {
 		this.x = randomX();
 		this.y = 0;
 		this.vy = vy;
-		obstacle = new Image("res/obstacle.png");
+		switch(type) {
+			case 0:
+				obstacle = new Image("res/kryptonite_s.png");
+				this.hitbox = new Rectangle(x, y, 21f, 45f);
+				this.type = type;
+				break;
+			case 1:
+				obstacle = new Image("res/kryptonite_m.png");
+				this.hitbox = new Rectangle(x, y, 29f, 67f);
+				this.type = type;
+				break;
+			case 2:
+				obstacle = new Image("res/kryptonite_l.png");
+				this.hitbox = new Rectangle(x, y, 40f, 91f);
+				this.type = type;
+				break;
+			default :
+				obstacle = new Image("res/kryptonite_m.png");
+				this.hitbox = new Rectangle(x, y, 29f, 67f);
+				this.type = 1;
+				break;
+		}
 	}
 	
-	public float getX(){
-		return x;
+	public int getType(){
+		return type;
 	}
-	public void render() {
+	
+	@Override
+	public void render(Graphics g) {
 		 obstacle.draw(x,y);
 	}
 	
-	public void update() throws SlickException {
-		if ( y > 480){
-			checkDelete = true;
-		}
-		 y += vy;
+	@Override
+	public void update(int delta){
+		this.hitbox.setLocation(this.x, this.y);
+		y += vy;
 	}
 	
 	public int randomX() {
 		  Random rand = new Random();
 		  int n = rand.nextInt((30) + ICanFlyGame.GAME_WIDTH-30);
 		  return n;
-	  }
-	public boolean isCollide(float pX,float pY){
-		if(Math.abs(pX - x) <= 50  && Math.abs(pY - y) <= 50){
+	}
+	
+	public boolean isCollide(Player player){
+		if (this.hitbox.intersects(player.hitbox)) {
+	        return true;
+	    }
+		else {
+			return false;
+		}
+	}
+	
+	public boolean isDeletable() {
+		if ( y > 480 || ICanFlyGame.isGameOver){
 			return true;
 		}
-		return false;
+		else {
+			return false;
+		}
 	}
 }
