@@ -39,14 +39,17 @@ public class Player {
 
   public void getHit(int type) {
     switch(type) {
-      case 0: 
+      case 7: 
         this.hp -= DAMAGE_OBSTACLE_S;
         break;
-      case 1:
+      case 10:
         this.hp -= DAMAGE_OBSTACLE_M;
         break;
-      case 2:
+      case 13:
         this.hp -= DAMAGE_OBSTACLE_L;
+        break;
+      case 99:
+        this.getHeal();
         break;
       default : 
         this.hp -= DAMAGE_OBSTACLE_M;

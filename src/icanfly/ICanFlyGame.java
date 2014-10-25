@@ -86,7 +86,7 @@ public class ICanFlyGame extends BasicGame {
 
   public int randomTypeofObstacle() {
     Random rand = new Random();
-    int n = rand.nextInt(5);
+    int n = rand.nextInt(20);
     return n;
   }
 
