@@ -39,9 +39,9 @@ public class Obstacle implements Entity {
         this.hitbox = new Rectangle(x, y, 40f, 91f);
         this.type = type;
         break;
-      case 3:
-        obstacle = new Image("res/kryptonite_l.png");
-        this.hitbox = new Rectangle(x, y, 40f, 91f);
+      case 8:
+        obstacle = new Image("res/heal_stone.png");
+        this.hitbox = new Rectangle(x, y, 90f, 90f);
         this.type = 99;
         break;
       default :

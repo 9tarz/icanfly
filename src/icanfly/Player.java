@@ -58,7 +58,10 @@ public class Player {
   }
 
   public void getHeal() {
-    this.hp = 100;
+    if (this.hp >= 70) {
+      this.hp = 70;
+    }
+    this.hp += 30;
   }
 
   public Player(float x, float y,float vjump) throws SlickException {
