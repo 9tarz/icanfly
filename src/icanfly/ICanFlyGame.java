@@ -180,6 +180,7 @@ public class ICanFlyGame extends BasicGame {
       ICanFlyGame game = new ICanFlyGame("ICanFlyGame by nullnil");
       AppGameContainer appgc = new AppGameContainer(game);
       appgc.setDisplayMode(GAME_WIDTH,GAME_HEIGHT, false);
+      appgc.setMinimumLogicUpdateInterval(1000 / 60);
       appgc.start();
     } catch (SlickException e) {
       e.printStackTrace();
