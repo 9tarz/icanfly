@@ -39,7 +39,7 @@ public class Obstacle implements Entity {
         this.hitbox = new Rectangle(x, y, 40f, 91f);
         this.type = type;
         break;
-      case 8:
+      case 7:
         obstacle = new Image("res/heal_stone.png");
         this.hitbox = new Rectangle(x, y, 90f, 90f);
         this.type = 99;
@@ -69,7 +69,7 @@ public class Obstacle implements Entity {
 
   public int randomX() {
     Random rand = new Random();
-    int n = rand.nextInt((30) + ICanFlyGame.GAME_WIDTH-30);
+    int n = rand.nextInt((((ICanFlyGame.GAME_WIDTH - 30) - 30) + 1) + 30);
     return n;
   }
 
