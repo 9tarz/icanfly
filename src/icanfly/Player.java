@@ -6,7 +6,12 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
 public class Player {
-  public static final float X_MOVE_RANGE = 0.5f;
+  private static final float X_MOVE_RANGE = 0.5f;
+  private static final int DAMAGE_OBSTACLE_S = 2;
+  private static final int DAMAGE_OBSTACLE_M = 5;
+  private static final int DAMAGE_OBSTACLE_L = 10;
+  private static final float PLAYER_IMAGE_WIDTH = 63f;
+  private static final float PLAYER_IMAGE_HEIGHT = 103f;
   
   private float x;
   private float y;
@@ -35,16 +40,16 @@ public class Player {
   public void getHit(int type) {
     switch(type) {
       case 0: 
-        this.hp -= 2;
+        this.hp -= DAMAGE_OBSTACLE_S;
         break;
       case 1:
-        this.hp -= 5;
+        this.hp -= DAMAGE_OBSTACLE_M;
         break;
       case 2:
-        this.hp -= 10;
+        this.hp -= DAMAGE_OBSTACLE_L;
         break;
       default : 
-        this.hp -= 5;
+        this.hp -= DAMAGE_OBSTACLE_M;
         break;
      }
   }
@@ -59,7 +64,7 @@ public class Player {
     this.vy = vjump;
     this.vjump = vjump;
     this.image = new Image("res/player.png");
-    this.hitbox = new Rectangle(x, y, 63f, 103f);
+    this.hitbox = new Rectangle(x, y, PLAYER_IMAGE_WIDTH, PLAYER_IMAGE_HEIGHT);
   }
 
   public void render(Graphics g) {

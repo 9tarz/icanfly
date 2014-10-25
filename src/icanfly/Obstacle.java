@@ -19,6 +19,10 @@ public class Obstacle implements Entity {
     this.x = randomX();
     this.y = 0;
     this.vy = vy;
+    handleObstacleType(type);
+    }
+
+  private void handleObstacleType(int type) throws SlickException {
     switch(type) {
       case 0:
         obstacle = new Image("res/kryptonite_s.png");
@@ -41,7 +45,7 @@ public class Obstacle implements Entity {
         this.type = 1;
         break;
         }
-    }
+  }
 
   public int getType(){
     return type;
@@ -67,14 +71,13 @@ public class Obstacle implements Entity {
   public boolean isCollide(Player player){
     if (this.hitbox.intersects(player.hitbox)) {
       return true;
-    }
-    else {
+    } else {
       return false;
     }
   }
   
   public boolean isDeletable() {
-    if ( y > 480 || ICanFlyGame.isGameOver) {
+    if ( y > ICanFlyGame.GAME_HEIGHT || ICanFlyGame.isGameOver) {
       return true;
     } else {
       return false;

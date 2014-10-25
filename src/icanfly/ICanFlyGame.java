@@ -23,6 +23,10 @@ public class ICanFlyGame extends BasicGame {
   private static final int OBSTACLE_DELAY_HARD = 100;
   private static final int OBSTACLE_DELAY_GODLIKE = 50;
   public static final int OBSTACLE_COUNT = 5;
+  public static final int INITIAL_HP = 100;
+  public static final int INITIAL_SCORE = 0;
+  public static final int INITIAL_SCORE_TIMER = 0;
+  public static final int INITIAL_DELAY_TIMER = 0;
 
   public static boolean isGameOver;
   private Player player;
@@ -61,22 +65,22 @@ public class ICanFlyGame extends BasicGame {
 
   private void renderGameBG(Graphics g) throws SlickException {
     gameBG = new Image("res/BG.png"); 
-    g.drawImage(gameBG,0,0,null);
+    g.drawImage( gameBG, 0, 0, null);
   }
 
   private void renderScoreAndHP(Graphics g) {
-    g.drawString("Score:" + score, 100, 100);
-    g.drawString("HP:" + player.getHP(), 100, 150);
+    g.drawString("Score:" + score, 500, 30);
+    g.drawString("HP:" + player.getHP(), 500, 60);
   }
 
   @Override
   public void init(GameContainer container) throws SlickException {
     isGameOver = false;
-    score = 0;
-    score_timer = 0;
-    delay_timer = 0;
+    score = INITIAL_SCORE;
+    score_timer = INITIAL_SCORE_TIMER;
+    delay_timer = INITIAL_DELAY_TIMER;
     player = new Player(GAME_WIDTH/2, GAME_HEIGHT/2, PLAYER_JUMP_VY);
-    player.setHP(100);
+    player.setHP(INITIAL_HP);
     createObstacles();
   }
 
@@ -88,7 +92,7 @@ public class ICanFlyGame extends BasicGame {
 
   public void createObstacles() throws SlickException {
     for (int i = 0; i < 1 ; i++) {
-      entities.add(new Obstacle(OBSTACLE_VY,randomTypeofObstacle()));
+      entities.add(new Obstacle( OBSTACLE_VY, randomTypeofObstacle()));
     }
   }
 
@@ -97,6 +101,29 @@ public class ICanFlyGame extends BasicGame {
     player.update(delta);
     playerControl(container,delta);
     increaseScore(delta);
+    handleGameMode(delta);
+    handleEntity(delta);
+    if (player.getY() > GAME_HEIGHT || player.getHP() <= 0 ) {
+      isGameOver = true;
+    }
+  }
+
+  private void handleEntity(int delta) {
+    Iterator<Entity> iterator = entities.iterator();
+    while (iterator.hasNext()) {
+      Entity entity = iterator.next();
+      entity.update(delta);
+      if(entity.isCollide(player)) {
+        player.getHit(entity.getType());
+        iterator.remove();
+      }
+      if (entity.isDeletable()) {
+        iterator.remove();
+      }
+    }
+  }
+
+  private void handleGameMode(int delta) throws SlickException {
     delay_timer -= delta;
     if(delay_timer <= 0) {
       createObstacles();
@@ -112,34 +139,19 @@ public class ICanFlyGame extends BasicGame {
         delay_timer = OBSTACLE_DELAY_EASY;
       }
     }
-    Iterator<Entity> iterator = entities.iterator();
-    while (iterator.hasNext()) {
-      Entity entity = iterator.next();
-      entity.update(delta);
-      if(entity.isCollide(player)) {
-        player.getHit(entity.getType());
-        iterator.remove();
-      }
-      if (entity.isDeletable()) {
-        iterator.remove();
-      }
-    }
-    if (player.getY() > 480 || player.getHP() <= 0 ) {
-      isGameOver = true;
-    }
   }
 
   public void increaseScore(int delta) {
     score_timer += delta;
-    if(score_timer >= 50 && !isGameOver ){
+    if(score_timer >= 50 && !isGameOver){
       score++;
-      score_timer=0;
+      score_timer = 0;
     }
   }
 
   public void playerControl(GameContainer container,int delta) {
     Input input = container.getInput();
-    if (input.isKeyDown(Input.KEY_A )) {
+    if (input.isKeyDown(Input.KEY_A)) {
       player.moveLeft(delta);
     }
     if (input.isKeyDown(Input.KEY_D)) {
@@ -163,12 +175,12 @@ public class ICanFlyGame extends BasicGame {
 
   public static void main(String[] args) {
     try {
-      ICanFlyGame game = new ICanFlyGame("ICanFlyGame");
+      ICanFlyGame game = new ICanFlyGame("ICanFlyGame by nullnil");
       AppGameContainer appgc = new AppGameContainer(game);
-      appgc.setDisplayMode(640,480, false);
+      appgc.setDisplayMode(GAME_WIDTH,GAME_HEIGHT, false);
       appgc.start();
-      } catch (SlickException e) {
-        e.printStackTrace();
-      }
+    } catch (SlickException e) {
+      e.printStackTrace();
+    }
   }
 }
