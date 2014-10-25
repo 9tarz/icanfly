@@ -13,24 +13,26 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 public class ICanFlyGame extends BasicGame {
-	private Player player;
 	public static final int GAME_WIDTH = 640;
 	public static final int GAME_HEIGHT = 480;
 	public static final float PLAYER_JUMP_VY = -5;
 	public static final float OBSTACLE_VY = 4;
 	public static final float G = (float) 0.7;
-	private LinkedList<Entity> entities = new  LinkedList<Entity>();
-	public static final int OBSTACLE_COUNT = 5;
+  private static final int OBSTACLE_DELAY_EASY = 500;
+  private static final int OBSTACLE_DELAY_MEDIUM = 300;
+  private static final int OBSTACLE_DELAY_HARD = 100;
+  private static final int OBSTACLE_DELAY_GODLIKE = 50;
+  public static final int OBSTACLE_COUNT = 5;
+  
 	public static boolean isGameOver;
-	private static int OBSTACLE_DELAY_EASY = 500;
-	private static int OBSTACLE_DELAY_MEDIUM = 300;
-	private static int OBSTACLE_DELAY_HARD = 100;
-	private static int OBSTACLE_DELAY_GODLIKE = 50;
+	private Player player;
 	private int score;
 	private int score_timer;
 	private int delay_timer;
 	private Image gameoverBG;
 	private Image gameBG;
+	
+  private LinkedList<Entity> entities = new  LinkedList<Entity>();
 	
 	public ICanFlyGame(String title) {
 		super(title);
@@ -80,15 +82,15 @@ public class ICanFlyGame extends BasicGame {
 	}
 	
 	public int randomTypeofObstacle() {
-		  Random rand = new Random();
-		  int n = rand.nextInt(5);
-		  return n;
-	}
+    Random rand = new Random();
+    int n = rand.nextInt(5);
+    return n;
+  }
 	
 	public void createObstacles() throws SlickException {
-	    for (int i = 0; i < 1 ; i++) {
-	    	entities.add(new Obstacle(OBSTACLE_VY,randomTypeofObstacle()));
-	    }
+    for (int i = 0; i < 1 ; i++) {
+      entities.add(new Obstacle(OBSTACLE_VY,randomTypeofObstacle()));
+    }
 	}
 	
 	@Override
@@ -97,16 +99,20 @@ public class ICanFlyGame extends BasicGame {
 		playerControl(container,delta);
 		increaseScore(delta);
 		delay_timer -= delta;
-		if(delay_timer <= 0){
+		if(delay_timer <= 0) {
 			createObstacles();
-			if (this.score < 500)
+			if (this.score < 500) {
 				delay_timer = OBSTACLE_DELAY_EASY;
-			else if (this.score >= 500 && this.score < 1500)
+			}
+			else if (this.score >= 500 && this.score < 1500) {
 				delay_timer = OBSTACLE_DELAY_MEDIUM;
-			else if (this.score >= 1500 && this.score < 3000)
+			}
+			else if (this.score >= 1500 && this.score < 3000) {
 				delay_timer = OBSTACLE_DELAY_HARD;
-			else if (this.score >= 3000)
+			}
+			else if (this.score >= 3000) {
 				delay_timer = OBSTACLE_DELAY_GODLIKE;
+			}
 			else {
 				delay_timer = OBSTACLE_DELAY_EASY;
 			}
@@ -115,7 +121,7 @@ public class ICanFlyGame extends BasicGame {
 		while (iterator.hasNext()) {
 			Entity entity = iterator.next();
 			entity.update(delta);
-			if(entity.isCollide(player)){
+			if(entity.isCollide(player)) {
 				player.getHit(entity.getType());
 				iterator.remove();
 			}
@@ -154,20 +160,21 @@ public class ICanFlyGame extends BasicGame {
 	    if (key == Input.KEY_ENTER && isGameOver) {
 	    	try {
 				init(null);
-			} catch (SlickException e) {
+	    	} catch (SlickException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+	    	}
 	    }
 	 }
 	
 	public static void main(String[] args) {
-	    try {
-	      ICanFlyGame game = new ICanFlyGame("ICanFlyGame");
-	      AppGameContainer appgc = new AppGameContainer(game);
-	      appgc.setDisplayMode(640,480, false);
-	      appgc.start();
-	    } catch (SlickException e) {
-	      e.printStackTrace();
+    try {
+      ICanFlyGame game = new ICanFlyGame("ICanFlyGame");
+      AppGameContainer appgc = new AppGameContainer(game);
+      appgc.setDisplayMode(640,480, false);
+      appgc.start();
+      } catch (SlickException e) {
+        e.printStackTrace();
 	   }
-}}
+	}
+}

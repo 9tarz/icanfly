@@ -6,24 +6,31 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
 public class Player {
-	public static final float X_MOVE_RANGE = 0.5f;
-	private float x;
-	private float y;
-	private Image image;
-	private float vy;
-	private float vjump;
-	private int hp;
-	public Rectangle hitbox;
-	
-	public float getX() { return x; }
-	
-	public float getY() { return y; }
-	
-	public int getHP() { return hp; }
-	
-	public void setHP(int hp) {
-		this.hp = hp;
-	 }
+  public static final float X_MOVE_RANGE = 0.5f;
+  
+  private float x;
+  private float y;
+  private Image image;
+  private float vy;
+  private float vjump;
+  private int hp;
+  public Rectangle hitbox;
+  
+  public float getX() { 
+    return x; 
+  }
+  
+  public float getY() { 
+    return y; 
+  }
+
+  public int getHP() { 
+    return hp; 
+  }
+
+  public void setHP(int hp) {
+    this.hp = hp;
+  }
 	
 	public void getHit(int type) {
 		switch(type) {
@@ -47,16 +54,16 @@ public class Player {
 	}
 	  
 	public Player(float x, float y,float vjump) throws SlickException {
-	    this.x = x;
-	    this.y = y;
-	    this.vy = vjump;
-	    this.vjump = vjump;
-	    this.image = new Image("res/player.png");
-	    this.hitbox = new Rectangle(x, y, 63f, 103f);
+	  this.x = x;
+    this.y = y;
+    this.vy = vjump;
+    this.vjump = vjump;
+    this.image = new Image("res/player.png");
+    this.hitbox = new Rectangle(x, y, 63f, 103f);
 	}
 	
 	public void render(Graphics g) {
-	    image.draw(x,y);
+	  image.draw(x,y);
 	}
 	
 	public void update(int delta) {
@@ -67,26 +74,23 @@ public class Player {
 		else if(this.x < 0) {
 			this.x = ICanFlyGame.GAME_WIDTH;
 		}
-		/*if(this.y <= 0){
-			getHeal();
-		}*/
-	    y += vy;
-	    vy += ICanFlyGame.G;
+		y += vy;
+		vy += ICanFlyGame.G;
 	}
 	
 	public void setVy(float vy) {
-	    this.vy = vy;
+	  this.vy = vy;
 	}
 	
 	public void moveLeft(int delta) {
-		x -= X_MOVE_RANGE *delta ;
+	  x -= X_MOVE_RANGE *delta ;
 	}
 	
 	public void moveRight(int delta) {
-		x += X_MOVE_RANGE *delta;
+    x += X_MOVE_RANGE *delta;
 	}
 	
 	public void jump(){
-		  this.vy = vjump;
+    this.vy = vjump;
 	}
 }

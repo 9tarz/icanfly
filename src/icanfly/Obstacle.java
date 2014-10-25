@@ -8,10 +8,10 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
 public class Obstacle implements Entity {
-	private Image obstacle;
-	private float x;
-	private float y;
-	private float vy;
+  private Image obstacle;
+  private float x;
+  private float y;
+  private float vy;
 	public Rectangle hitbox;
 	private int type;
 	
@@ -43,42 +43,42 @@ public class Obstacle implements Entity {
 		}
 	}
 	
-	public int getType(){
-		return type;
-	}
+  public int getType(){
+    return type;
+  }
 	
 	@Override
-	public void render(Graphics g) {
-		 obstacle.draw(x,y);
+  public void render(Graphics g) {
+    obstacle.draw(x,y);
 	}
 	
 	@Override
 	public void update(int delta){
-		this.hitbox.setLocation(this.x, this.y);
-		y += vy;
+	  this.hitbox.setLocation(this.x, this.y);
+    y += vy;
 	}
 	
 	public int randomX() {
-		  Random rand = new Random();
-		  int n = rand.nextInt((30) + ICanFlyGame.GAME_WIDTH-30);
-		  return n;
+    Random rand = new Random();
+    int n = rand.nextInt((30) + ICanFlyGame.GAME_WIDTH-30);
+    return n;
 	}
 	
 	public boolean isCollide(Player player){
-		if (this.hitbox.intersects(player.hitbox)) {
-	        return true;
-	    }
+    if (this.hitbox.intersects(player.hitbox)) {
+      return true;
+    }
 		else {
-			return false;
+		  return false;
 		}
 	}
 	
-	public boolean isDeletable() {
-		if ( y > 480 || ICanFlyGame.isGameOver){
-			return true;
-		}
+  public boolean isDeletable() {
+     if ( y > 480 || ICanFlyGame.isGameOver) {
+       return true;
+     }
 		else {
-			return false;
+		  return false;
 		}
-	}
+  }
 }
