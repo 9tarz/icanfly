@@ -24,7 +24,7 @@ public class Obstacle implements Entity {
 
   private void handleObstacleType(int type) throws SlickException {
     switch(type) {
-      case 7:
+      case 9:
         obstacle = new Image("res/kryptonite_s.png");
         this.hitbox = new Rectangle(x, y, 21f, 45f);
         this.type = type;
@@ -34,12 +34,12 @@ public class Obstacle implements Entity {
         this.hitbox = new Rectangle(x, y, 29f, 67f);
         this.type = type;
         break;
-      case 13:
+      case 11:
         obstacle = new Image("res/kryptonite_l.png");
         this.hitbox = new Rectangle(x, y, 40f, 91f);
         this.type = type;
         break;
-      case 0:
+      case 3:
         obstacle = new Image("res/kryptonite_l.png");
         this.hitbox = new Rectangle(x, y, 40f, 91f);
         this.type = 99;
