@@ -10,6 +10,8 @@ public class Player {
   private static final int DAMAGE_OBSTACLE_S = 2;
   private static final int DAMAGE_OBSTACLE_M = 5;
   private static final int DAMAGE_OBSTACLE_L = 10;
+  private static final int HEAL_HP = 30;
+  private static final String PLAYER_IMAGE_PATH = "res/player.png";
   private static final float PLAYER_IMAGE_WIDTH = 63f;
   private static final float PLAYER_IMAGE_HEIGHT = 103f;
   
@@ -58,10 +60,10 @@ public class Player {
   }
 
   public void getHeal() {
-    if (this.hp >= 70) {
-      this.hp = 70;
+    if (this.hp >= (ICanFlyGame.INITIAL_HP - HEAL_HP)) {
+      this.hp = ICanFlyGame.INITIAL_HP - HEAL_HP;
     }
-    this.hp += 30;
+    this.hp += HEAL_HP;
   }
 
   public Player(float x, float y,float vjump) throws SlickException {
@@ -69,7 +71,7 @@ public class Player {
     this.y = y;
     this.vy = vjump;
     this.vjump = vjump;
-    this.image = new Image("res/player.png");
+    this.image = new Image(PLAYER_IMAGE_PATH);
     this.hitbox = new Rectangle(x, y, PLAYER_IMAGE_WIDTH, PLAYER_IMAGE_HEIGHT);
   }
 
@@ -105,7 +107,7 @@ public class Player {
   }
   
   public boolean isDeathZone() {
-    return (this.y <= 150);
+    return (this.y <= (ICanFlyGame.GAME_HEIGHT - 330));
   }
   
   public boolean isDie() {

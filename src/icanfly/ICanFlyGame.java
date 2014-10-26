@@ -22,7 +22,7 @@ public class ICanFlyGame extends BasicGame {
   private static final int OBSTACLE_DELAY_MEDIUM = 300;
   private static final int OBSTACLE_DELAY_HARD = 100;
   private static final int OBSTACLE_DELAY_GODLIKE = 50;
-  private static final int INITIAL_HP = 100;
+  public static final int INITIAL_HP = 100;
   private static final int INITIAL_SCORE = 0;
   private static final int INITIAL_SCORE_TIMER = 0;
   private static final int INITIAL_DELAY_TIMER = 0;
