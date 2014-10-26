@@ -52,7 +52,7 @@ public class Obstacle implements Entity {
         this.hitbox = new Rectangle(this.x, this.y, KRYPTONITE_L_IMAGE_WIDTH, KRYPTONITE_L_IMAGE_HEIGHT);
         this.type = type;
         break;
-      case 7:
+      case 8:
         obstacle = new Image(HEALSTONE_IMAGE_PATH);
         this.hitbox = new Rectangle(this.x, this.y, HEALSTONE_IMAGE_WIDTH, HEALSTONE_IMAGE_HEIGHT);
         this.type = 99;
