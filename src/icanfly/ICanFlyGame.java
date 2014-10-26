@@ -26,8 +26,11 @@ public class ICanFlyGame extends BasicGame {
   private static final int INITIAL_SCORE = 0;
   private static final int INITIAL_SCORE_TIMER = 0;
   private static final int INITIAL_DELAY_TIMER = 0;
+  private static final String GAMEOVERBG_IMAGE_PATH = "res/gameoverBG.jpg";
+  private static final String GAMEBG_IMAGE_PATH = "res/BG.png";
 
   public static boolean isGameOver;
+  public static boolean isGameStart;
   private Player player;
   private int score;
   private int score_timer;
@@ -43,7 +46,9 @@ public class ICanFlyGame extends BasicGame {
 
   @Override
   public void render(GameContainer container, Graphics g) throws SlickException {
-    if (!isGameOver) {
+    if (!isGameStart && !isGameOver) {
+      renderGameMenu(g);
+    } else if (isGameStart && !isGameOver) {
       renderGameBG(g);
       renderScoreAndHP(g);
       player.render(g);
@@ -55,26 +60,37 @@ public class ICanFlyGame extends BasicGame {
     }
   }
 
+  private void renderGameMenu(Graphics g) {
+    g.drawString(">>> I can Fly <<<", 250, 100);
+    g.drawString("How to play: ", 270, 150);
+    g.drawString("-> Key A to move left <-", 225, 200);
+    g.drawString("-> Key D to move right <-", 225, 230);
+    g.drawString("-> Spacebar to fly <-", 225, 260);
+    g.drawString("Press Enter to Start!", 220, 330);
+  }
+
   private void renderGameOver(Graphics g) throws SlickException {
-    gameoverBG = new Image("res/gameoverBG.jpg");
-    g.drawImage(gameoverBG,0,0,null);
-    g.drawString("Score:" + score, 280, 100);
-    g.drawString("ENTER TO START!", 250, 150);
+    //gameoverBG = new Image(GAMEOVERBG_IMAGE_PATH);
+    //g.drawImage(gameoverBG, 0, 0, null);
+    g.drawString(">>> Game Over <<<", 235, 150);
+    g.drawString("Your Height: " + score + "m", 235, 200);
+    g.drawString("Press Enter to Start!", 220, 250);
   }
 
   private void renderGameBG(Graphics g) throws SlickException {
-    gameBG = new Image("res/BG.png"); 
-    g.drawImage( gameBG, 0, 0, null);
+    gameBG = new Image(GAMEBG_IMAGE_PATH); 
+    g.drawImage(gameBG, 0, 0, null);
   }
 
   private void renderScoreAndHP(Graphics g) {
-    g.drawString("Score:" + score, 500, 30);
-    g.drawString("HP:" + player.getHP(), 500, 60);
+    g.drawString("Height: " + score + "m", 500, 30);
+    g.drawString("HP: " + player.getHP(), 500, 60);
   }
 
   @Override
   public void init(GameContainer container) throws SlickException {
     isGameOver = false;
+    isGameStart = false;
     score = INITIAL_SCORE;
     score_timer = INITIAL_SCORE_TIMER;
     delay_timer = INITIAL_DELAY_TIMER;
@@ -97,11 +113,13 @@ public class ICanFlyGame extends BasicGame {
 
   @Override
   public void update(GameContainer container, int delta) throws SlickException {
-    player.update(delta);
-    playerControl(container,delta);
-    increaseScore(delta);
-    handleGameMode(delta);
-    handleEntity(delta);
+    if (isGameStart) {
+      player.update(delta);
+      playerControl(container,delta);
+      increaseScore(delta);
+      handleGameMode(delta);
+      handleEntity(delta);
+    }
     if (player.isDie()) {
       isGameOver = true;
     }
@@ -165,6 +183,9 @@ public class ICanFlyGame extends BasicGame {
   public void keyPressed(int key, char c) {
     if (key == Input.KEY_SPACE) {
       player.jump();
+    }
+    if (key == Input.KEY_ENTER && !isGameStart) {
+      isGameStart = true;
     }
     if (key == Input.KEY_ENTER && isGameOver) {
       try {
